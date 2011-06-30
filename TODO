@@ -1,0 +1,130 @@
+
+-document the exit (error) codes.
+
+-cursor keys are not restored after watching a game of
+ curses-nethack.
+
+-move the games[] array into shmem?
+
+-$MTIME(filename)
+
+< Napkin> I'd suggest the default of DGL_MAILMSGLEN to be less
+< Napkin> there are 4 digits in front of the prompt, paxed. having
+   it at 80, will cause display errors if someone types more than 75 letters
+< Napkin> well, to be precise - not the writing - but deleting
+   will no longer work, because the cursor won't be moved to the previous
+   line again
+
+-when exiting from watching a player, move the cursor to the last line
+ of the screen before enabling the ncurses mode; so when we exit dgl,
+ the watched player's game is all visible and the menu prompt doesn't
+ mess it up.
+-watching menu will hilight the first matching username... what if we have
+ more than one game installed, and someone's playing more than one at the
+ same time?  Should also save game#, not just the username.
+-allow admin to disabling the 'm' mail key in ttyplay.
+-update README
+-maybe allow something like changed_menu="[Updated %d]" config option  and
+ $CHANGED in the menu banner.
+ the $CHANGED will be replaced with the changed_menu value.
+ the %d in changed_menu will be replaced with the banner file
+ change time.
+-whenever config file has a dir, check that it ends with "/"
+-in domailuser(), we need find_curr_player_game(username)
+-for menu definitions, allow "default" commands (when user presses a
+ key not defined in other commands):
+   commands[default] = ...
+
+-change dgl-banner handling; we only use the top line of it nowadays...
+ (maybe make that info config line: bannerline = "## $SERVERID" or something)
+-allow the admin to config the watching menu:
+  -top banner
+  -bottom banner
+  -remove and reorder the columns:
+     watch_title = "   Name      Game  Size   Start date & time  Idle"
+       this doesn't allow hiliting the sorted title, though...
+     watch_columns = "0) 1  2  3  4 5  6"
+       where the numbers correspond to the columns, everything else
+       is passed through. the columns have default widths.
+       col 0=selectletter, 1=playername, 2=gamenum, 3=termsize, 4=startdate,
+           5=starttime, 6=idletime
+  -set default sort method
+  -selectorchars:
+     watch_selectorchars = "abcdefghijklmn" (a-zA-Z, minus qQ)
+  -keys:
+     currently: qQ=return, '.'=sort++, ','=sort--, etc
+-allow admin to set per-game "extra info" file,
+   extrainfofile = "/nh343/var/extrainfo/%n.xtranfo"
+ contents of which are shown in the watching menu as info-column.
+ the game is responsible for updating the contents of that file.
+
+-update virus to the newest version.
+ (virus is originally from busybox:
+  http://git.busybox.net/busybox/tree/editors/vi.c
+  but that version needs to be made secure)
+-allow changing the name where the ttyrecs are saved, like
+  ttyrec_fn = "%rttyrec/%n/%g/%p.ttyrec"
+-maybe save more stuff in the db, if we're using the sqlite
+ (last login timestamp, watch-menu sort-type, etc)
+-Allow using a ttyrec (or similar screen capture) as the menu
+ text, instead of a text file.
+ maybe adding a bannertype={auto,txt,ttyrec,screendump}
+ into a menu def. auto=try to detect it from file extension.
+ would be useful to be able to define a program to run that
+ generates the banner? (eg. nethack hiscore list via nethack itself)
+-BUG: cannot quit watching until caught up with the stream.
+-allow configuring the watching, new user registration,
+ email/passwd change, etc. screens.
+-make default_fmode configurable, and add config
+ file command "chmod file mode"
+-allow setting the new rcfile access rights.
+-allow configuring the ttyrec dir location & file format.
+-maybe allow changing the watching-screen &c layouts too?
+-add commandline parameters to dgamelaunch:
+   dgamelaunch --chpasswd "nick" "newpass"
+-some games (robotfindskitten?) are not worth saving into ttyrecs,
+ make it configurable. if no ttyrecs, then can't watch the game, which is
+ a pity. maybe rather just save the latest ttyrec, which ties into
+ having configurable ttyrec filenames...
+-save the game name into ttyrec filename, so we can find what game it was.
+-allow configuring ttyplay.c; some games may use different clear-screen
+ commands. (see for example crawl)
+-allow configuring the gfx stripping. (number of chars, types of stripping,
+ include unicode stripping from crawl dgl, etc.)
+ This must be per-game configs; maybe we're running nethack and crawl
+ on the same server. ...does ttyplay know what game we're watching?
+
+charstrip "name" {
+  start_state = 0;
+  state = (0 and 0x0e), 0x00, 1;
+  state = (1 and 0x0f), 0x0f, 0;
+  state = (1 and 0x1b), 0x1b, 0;
+  state = (1 and gfxmap), gfxmap, 1;
+
+  # initializes the gfxmap from charstrip "name" gfxmap. could also have
+  # gfxmap_init = zero;
+  gfxmap_init = from "name";
+
+  # the following will replace characters 128-135 with the listed characters.
+  # accepts:
+  # 0xff (hexadecimal), 240 (decimal), 001 (octal), 'x' (character)
+  gfxmap = 128, (' ', '|', '#', 0xb3, 0x00, 240, 241);
+}
+
+
+in game definition:
+  char_strips = "name", "name", "name", ...
+or maybe add a new command '' set_charstrip "name" ''
+
+
+-public (no-password) accounts? (a per-user flag) what happens when someone
+ is playing on the account and someone else logins and we start playing?
+-allow users to run recover themselves
+-configurable stuff: allowed chars in usernames,
+ allow char stripping, ...
+
+- Flags for operators/staff/admins or (optionally) user-bans.
+
+- Localization of variables, code clean up
+
+- Use /var/run/nologin and/or dgl-specific nologin file
