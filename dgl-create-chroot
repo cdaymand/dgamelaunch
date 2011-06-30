@@ -16,11 +16,11 @@ USRGRP="games:games"
 # COMPRESS from include/config.h; the compression binary to copy. leave blank to skip.
 COMPRESSBIN="/bin/gzip"
 # nethack binary to copy into chroot
-NETHACKBIN="/home/paxed/hacking/coding/nethacksource/nethack-3.4.3-nao/nh343/nethack.343-nao"
+NETHACKBIN="/opt/nethack/nethack.alt.org/nh343/nethack"
 # fixed data to copy (leave blank to skip)
-NH_PLAYGROUND_FIXED="/home/paxed/hacking/coding/nethacksource/nethack-3.4.3-nao/nh343/"
+NH_PLAYGROUND_FIXED="/nh343"
 # HACKDIR from include/config.h; aka nethack subdir inside chroot
-NHSUBDIR="/nh343/"
+NHSUBDIR="/nh343"
 # VAR_PLAYGROUND from include/unixconf.h
 NH_VAR_PLAYGROUND="/nh343/var/"
 
@@ -68,15 +68,15 @@ CHROOT="`echo ${CHROOT%/}`"
 set -e
 umask 022
 
-if [ -e "$CHROOT" ]; then
-   errorexit "Chroot $CHROOT already exists."
-fi
+#if [ -e "$CHROOT" ]; then
+#   errorexit "Chroot $CHROOT already exists."
+#fi
 
 CURDIR="`pwd`"
 
-if [ ! -e "$CURDIR/dgamelaunch" ]; then
-   errorexit "Cannot find dgamelaunch in $CURDIR"
-fi
+#if [ ! -e "$CURDIR/dgamelaunch" ]; then
+#   errorexit "Cannot find dgamelaunch in $CURDIR"
+#fi
 
 DGLFILE="dgamelaunch.`date +%Y%m%d`"
 
@@ -86,7 +86,7 @@ LIBS="`findlibs dgamelaunch`"
 
 mkdir -p "$CHROOT" || errorexit "Cannot create chroot"
 cd "$CHROOT"
-mkdir dgldir etc lib mail usr bin
+mkdir dgldir etc lib mail usr
 chown "$USRGRP" dgldir mail
 cp "$CURDIR/dgamelaunch" "$DGLFILE"
 ln -s "$DGLFILE" dgamelaunch
@@ -147,7 +147,7 @@ chmod go+r dgl_menu_main_anon.txt dgl_menu_main_user.txt dgl-banner dgl-default-
 NHSUBDIR="`echo ${NHSUBDIR%/}`"
 NHSUBDIR="`echo ${NHSUBDIR#/}`"
 
-mkdir "$CHROOT/$NHSUBDIR"
+#mkdir "$CHROOT/$NHSUBDIR"
 
 if [ ! -e "$NETHACKBIN" ]; then
   errorexit "Cannot find NetHack binary $NETHACKBIN"
@@ -158,7 +158,7 @@ if [ -n "$NETHACKBIN" -a -e "$NETHACKBIN" ]; then
   cd "$NHSUBDIR"
   NHBINFILE="`basename $NETHACKBIN`.`date +%Y%m%d`"
   cp "$NETHACKBIN" "$NHBINFILE"
-  ln -s "$NHBINFILE" nethack
+  #ln -s "$NHBINFILE" nethack
   LIBS="$LIBS `findlibs $NETHACKBIN`"
   cd "$CHROOT"
 fi
