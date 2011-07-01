@@ -926,6 +926,7 @@ do_cmd (Byte c)
       edit_status ();
       break;
     case 'h':                  // h- move left
+    case '4':
     case VI_K_LEFT:            // cursor key Left
     case 8:                    // ctrl-H- move left    (This may be ERASE char)
     case 127:                  // DEL- move left   (This may be ERASE char)
@@ -938,6 +939,7 @@ do_cmd (Byte c)
     case 10:                   // Newline ^J
     case 'j':                  // j- goto next line, same col
     case VI_K_DOWN:            // cursor key Down
+    case '2':
       if (cmdcnt-- > 1)
         {
           do_cmd (c);
@@ -977,6 +979,7 @@ do_cmd (Byte c)
       break;
     case ' ':                  // move right
     case 'l':                  // move right
+    case '6':
     case VI_K_RIGHT:           // Cursor Key Right
       if (cmdcnt-- > 1)
         {
@@ -1262,13 +1265,9 @@ do_cmd (Byte c)
 #endif /* BB_FEATURE_VI_SEARCH */
     case '0':                  // 0- goto begining of line
     case '1':                  // 1- 
-    case '2':                  // 2- 
     case '3':                  // 3- 
-    case '4':                  // 4- 
     case '5':                  // 5- 
-    case '6':                  // 6- 
     case '7':                  // 7- 
-    case '8':                  // 8- 
     case '9':                  // 9- 
       if (c == '0' && cmdcnt < 1)
         {
@@ -1659,6 +1658,7 @@ do_cmd (Byte c)
       break;
     case 'k':                  // k- goto prev line, same col
     case VI_K_UP:              // cursor key Up
+    case '8':
       if (cmdcnt-- > 1)
         {
           do_cmd (c);
