@@ -13,6 +13,18 @@
 
 OPTIONS=showexp,showscore,time,color,!autopickup
 OPTIONS=autodig,fruit:slime mold,boulder:0
+OPTIONS=dogname:NyanDog
+OPTIONS=catname:NyanCat
+OPTIONS=pickup_types:$
+OPTIONS=number_pad
+
+OPTIONS=menucolors
+MENUCOLOR=" blessed "=green
+MENUCOLOR=" holy "=green
+MENUCOLOR=" uncursed "=yellow
+MENUCOLOR=" cursed "=red
+MENUCOLOR=" unholy "=red
+MENUCOLOR=" cursed .* (being worn)"=orange&underline
 
 # For more information on what you can set in your nethackrc file, refer to:
 #   http://www.nethack.org/v343/Guidebook.html#_TOCentry_42
