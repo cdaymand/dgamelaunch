@@ -835,11 +835,14 @@ do_cmd (Byte c)
       if (c == VI_K_INSERT)
         goto dc5;
       // insert the char c at "dot"
-      if (1 <= c && c <= 127)
-        {
-          dot = char_insert (dot, c); // only ASCII chars
-        }
-      goto dc1;
+      if (c!='2' && c!='4' && c!='6' && c!='8'){
+	if (1 <= c && c <= 127)
+	  {
+	    dot = char_insert (dot, c); // only ASCII chars
+	  }
+	
+	goto dc1;
+      }
     }
 
   switch (c)
