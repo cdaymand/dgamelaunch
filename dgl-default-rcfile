@@ -13,8 +13,8 @@
 
 OPTIONS=showexp,showscore,time,color,!autopickup
 OPTIONS=autodig,fruit:slime mold,boulder:0
-OPTIONS=dogname:NyanDog
-OPTIONS=catname:NyanCat
+OPTIONS=dogname:NewtDog
+OPTIONS=catname:NewtCat
 OPTIONS=pickup_types:$
 OPTIONS=number_pad
 
